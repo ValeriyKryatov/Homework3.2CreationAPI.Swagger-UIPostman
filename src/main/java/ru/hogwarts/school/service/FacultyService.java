@@ -20,10 +20,10 @@ public class FacultyService {
     }
 
     public Faculty readFaculty(long id) {
-        return facultyRepository.findById(id).get();
+        return facultyRepository.findById(id).orElse(new Faculty());
     }
 
-    public Faculty changeFaculty(Faculty faculty) {
+    public Faculty changeFaculty(Faculty faculty) {;
         return facultyRepository.save(faculty);
     }
 
@@ -36,12 +36,6 @@ public class FacultyService {
     }
 
     public Collection<Faculty> findByColor(String color) {
-        ArrayList<Faculty> result = new ArrayList<>();
-        for (Faculty faculty : facultyRepository.findAll()) {
-            if (Objects.equals(faculty.getColor(), color)) {
-                result.add(faculty);
-            }
-        }
-        return result;
+        return facultyRepository.findByColor(color);
     }
 }
