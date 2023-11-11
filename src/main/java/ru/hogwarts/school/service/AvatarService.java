@@ -1,5 +1,7 @@
 package ru.hogwarts.school.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -7,7 +9,6 @@ import org.springframework.web.multipart.MultipartFile;
 import ru.hogwarts.school.model.Avatar;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.AvatarRepository;
-import ru.hogwarts.school.repository.StudentRepository;
 
 import javax.imageio.ImageIO;
 import javax.transaction.Transactional;
@@ -24,6 +25,8 @@ import static java.nio.file.StandardOpenOption.CREATE_NEW;
 @Transactional
 public class AvatarService {
 
+    private final static Logger logger = LoggerFactory.getLogger(AvatarService.class);
+
     @Value("avatars")
     private String avatarsDir;
 
@@ -36,6 +39,7 @@ public class AvatarService {
     }
 
     public void uploadAvatar(Long studentId, MultipartFile file) throws IOException {
+        logger.info("Was invoked method for loading image student by studentId = {}", studentId);
         Student student = studentService.readStudent(studentId);
 
         Path filePath = Path.of(avatarsDir, studentId + "." + getExtension(file.getOriginalFilename()));
@@ -61,10 +65,12 @@ public class AvatarService {
     }
 
     public Avatar findStudentAvatar(Long studentId) {
+        logger.info("Was invoked method for getting avatar by studentId = {}", studentId);
         return avatarRepository.findByStudentId(studentId).orElse(new Avatar());
     }
 
     private byte[] generateImageData(Path filePath) throws IOException {
+        logger.info("Was invoked method for generate image data");
         try (InputStream is = Files.newInputStream(filePath);
              BufferedInputStream bis = new BufferedInputStream(is, 1024);
              ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
@@ -86,6 +92,7 @@ public class AvatarService {
     }
 
     public Collection<Avatar> findAvatars(int page, int pageSize) {
+        logger.info("Was invoked method for getting list of student avatars on page = {} at page size = {}", page + 1, pageSize);
         return avatarRepository.findAll(PageRequest.of(page, pageSize)).getContent();
     }
 }
