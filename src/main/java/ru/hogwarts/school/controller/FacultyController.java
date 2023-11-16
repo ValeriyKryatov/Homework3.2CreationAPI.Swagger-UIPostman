@@ -10,6 +10,7 @@ import ru.hogwarts.school.service.StudentService;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/faculty")
@@ -76,5 +77,10 @@ public class FacultyController {
     public ResponseEntity<Faculty> deleteFaculty(@PathVariable Long id) {
         facultyService.deleteFaculty(id);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/longest_faculty_name")
+    public String getFacultyWithLongestName() {
+        return facultyService.facultyWithLongestName();
     }
 }

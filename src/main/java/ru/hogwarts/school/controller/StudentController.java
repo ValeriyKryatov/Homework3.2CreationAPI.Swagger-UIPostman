@@ -90,4 +90,14 @@ public class StudentController {
     public Collection<Student> getLastFiveStudents() {
         return studentService.lastFiveStudents();
     }
+
+    @GetMapping("/student_name_with_letter_A")
+    public Collection<Student> getStudentNameWithLetterA() {
+        return studentService.studentNameWithLetterA();
+    }
+
+    @GetMapping("/average_age_student_with_streams")
+    public double getAverageAgeStudentsInSchoolWithStreams() {
+        return studentService.averageAgeStudentsInSchoolWithStreams();
+    }
 }
