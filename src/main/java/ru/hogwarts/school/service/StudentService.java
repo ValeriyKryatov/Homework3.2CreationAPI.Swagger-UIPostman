@@ -76,7 +76,7 @@ public class StudentService {
         logger.info("Was invoked method for getting alphabetically sorted uppercase names of all students whose name begins with the letter A");
         return studentRepository.findAll()
                 .stream()
-                .filter(student -> student.getName().startsWith("А"))
+                .filter(student -> student.getName().toUpperCase().startsWith("А"))
                 .peek(student -> student.setName(student.getName().toUpperCase()))
                 .sorted(Comparator.comparing(Student::getName))
                 .collect(Collectors.toList());
