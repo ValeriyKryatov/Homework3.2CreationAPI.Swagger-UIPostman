@@ -100,4 +100,14 @@ public class StudentController {
     public double getAverageAgeStudentsInSchoolWithStreams() {
         return studentService.averageAgeStudentsInSchoolWithStreams();
     }
+
+    @GetMapping("/running_parallel_threads")
+    public void getStudentNamesToConsole() {
+        studentService.getStudentNamesToConsole();
+    }
+
+    @GetMapping("/running_parallel_synchronized_threads")
+    public void getStudentNamesToConsoleSynchronized() {
+        studentService.getStudentNamesToConsoleSynchronized();
+    }
 }

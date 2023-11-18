@@ -8,6 +8,7 @@ import ru.hogwarts.school.repository.StudentRepository;
 
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -88,5 +89,63 @@ public class StudentService {
                 .stream()
                 .mapToInt(Student::getAge)
                 .average().orElse(0);
+    }
+
+    public void getStudentNamesToConsole() {
+        List<String> names = getNamesStudents1();
+        System.out.println(names.get(0));
+        System.out.println(names.get(1));
+
+        Thread thread1 = new Thread(() -> {
+            System.out.println(names.get(2));
+            System.out.println(names.get(3));
+        });
+
+        Thread thread2 = new Thread(() -> {
+            System.out.println(names.get(4));
+            System.out.println(names.get(5));
+            System.out.println("*********************");
+        });
+
+        thread1.start();
+        thread2.start();
+    }
+
+
+    public List<String> getNamesStudents1() {
+        return studentRepository.findAll()
+                .stream()
+                .map(Student::getName)
+                .collect(Collectors.toList());
+    }
+
+    public void getStudentNamesToConsoleSynchronized() {
+        List<String> names = getNamesStudents2();
+        printStudentNamesSynchron(names.get(0));
+        printStudentNamesSynchron(names.get(1));
+
+        Thread thread1 = new Thread(() -> {
+            printStudentNamesSynchron(names.get(2));
+            printStudentNamesSynchron(names.get(3));
+        });
+
+        Thread thread2 = new Thread(() -> {
+            printStudentNamesSynchron(names.get(4));
+            printStudentNamesSynchron(names.get(5));
+        });
+
+        thread1.start();
+        thread2.start();
+    }
+
+    public List<String> getNamesStudents2() {
+        return studentRepository.findAll()
+                .stream()
+                .map(Student::getName)
+                .collect(Collectors.toList());
+    }
+
+    private synchronized void printStudentNamesSynchron(Object o) {
+        System.out.println(o.toString());
     }
 }
